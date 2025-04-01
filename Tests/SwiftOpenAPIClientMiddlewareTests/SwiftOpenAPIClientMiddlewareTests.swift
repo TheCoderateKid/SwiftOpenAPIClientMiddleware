@@ -1,93 +1,95 @@
-import Testing
-import Foundation
+
+import XCTest
 import HTTPTypes
+import HTTPTypesFoundation
+import Foundation
 import OpenAPIURLSession
 @testable import SwiftOpenAPIClientMiddleware
 
-@Test
-func headerAndPathDecoding() async throws {
-    let middleware = HeaderAndPathDecodingMiddleware()
+final class SwiftOpenAPIClientMiddlewareTests: XCTestCase {
 
-    let encodedPath = "/test%20path"
-    let encodedHeader = HTTPField(name: .init("X-Test-Header")!, value: "value%20encoded")
+    func testHeaderAndPathDecoding() async throws {
+        let middleware = HeaderAndPathDecodingMiddleware()
 
-    let request = HTTPRequest(
-        method: .get,
-        scheme: "https",
-        authority: "api.example.com",
-        path: encodedPath,
-        headerFields: HTTPFields([encodedHeader])
-    )
+        let encodedPath = "/test%20path"
+        let encodedHeader = HTTPField(name: .init("X-Test-Header")!, value: "value%20encoded")
 
-    let (response, _) = try await middleware.intercept(
-        request,
-        body: nil,
-        baseURL: URL(string: "https://api.example.com")!,
-        operationID: "test",
-        next: { req, _, _ in
-            #expect(req.path == "/test path")
+        let request = HTTPRequest(
+            method: .get,
+            scheme: "https",
+            authority: "api.example.com",
+            path: encodedPath,
+            headerFields: HTTPFields([encodedHeader])
+        )
 
-            let headerName = HTTPField.Name("X-Test-Header")!
-            #expect(req.headerFields[headerName] == "value encoded")
+        let (response, _) = try await middleware.intercept(
+            request,
+            body: nil,
+            baseURL: URL(string: "https://api.example.com")!,
+            operationID: "test",
+            next: { req, _, _ in
+                XCTAssertEqual(req.path, "/test path")
 
-            return (HTTPResponse(status: .ok), nil)
-        }
-    )
+                let headerName = HTTPField.Name("X-Test-Header")!
+                XCTAssertEqual(req.headerFields[headerName], "value encoded")
 
-    #expect(response.status == .ok)
-}
+                return (HTTPResponse(status: .ok), nil)
+            }
+        )
 
-@Test
-func jwtMiddlewareInjection() async throws {
-    let token = "mock.jwt.token"
-    let middleware = JWTMiddleware(tokenProvider: { token })
+        XCTAssertEqual(response.status, .ok)
+    }
 
-    let request = HTTPRequest(
-        method: .get,
-        scheme: "https",
-        authority: "api.example.com",
-        path: "/protected",
-        headerFields: [:]
-    )
+    func testJWTMiddlewareInjection() async throws {
+        let token = "mock.jwt.token"
+        let middleware = JWTMiddleware(tokenProvider: { token })
 
-    let (response, _) = try await middleware.intercept(
-        request,
-        body: nil,
-        baseURL: URL(string: "https://api.example.com")!,
-        operationID: "auth",
-        next: { req, _, _ in
-            let authHeader = HTTPField.Name("Authorization")!
-            #expect(req.headerFields[authHeader] == "Bearer \(token)")
-            return (HTTPResponse(status: .ok), nil)
-        }
-    )
+        let request = HTTPRequest(
+            method: .get,
+            scheme: "https",
+            authority: "api.example.com",
+            path: "/protected",
+            headerFields: [:]
+        )
 
-    #expect(response.status == .ok)
-}
+        let (response, _) = try await middleware.intercept(
+            request,
+            body: nil,
+            baseURL: URL(string: "https://api.example.com")!,
+            operationID: "auth",
+            next: { req, _, _ in
+                let authHeader = HTTPField.Name("Authorization")!
+                XCTAssertEqual(req.headerFields[authHeader], "Bearer \(token)")
+                return (HTTPResponse(status: .ok), nil)
+            }
+        )
 
-@Test
-func messageSigningMiddleware() async throws {
-    let middleware = MessageSigningMiddleware(signer: { _, _ in "signed-value" })
+        XCTAssertEqual(response.status, .ok)
+    }
 
-    let request = HTTPRequest(
-        method: .post,
-        scheme: "https",
-        authority: "api.example.com",
-        path: "/submit",
-        headerFields: [:]
-    )
+    func testMessageSigningMiddleware() async throws {
+        let middleware = MessageSigningMiddleware(signer: { _, _ in "signed-value" })
 
-    let (response, _) = try await middleware.intercept(
-        request,
-        body: nil,
-        baseURL: URL(string: "https://api.example.com")!,
-        operationID: "sign",
-        next: { req, _, _ in
-            let signatureHeader = HTTPField.Name("X-Signature")!
-            #expect(req.headerFields[signatureHeader] == "signed-value")
-            return (HTTPResponse(status: .ok), nil)
-        }
-    )
+        let request = HTTPRequest(
+            method: .post,
+            scheme: "https",
+            authority: "api.example.com",
+            path: "/submit",
+            headerFields: [:]
+        )
 
-    #expect(response.status == .ok)
+        let (response, _) = try await middleware.intercept(
+            request,
+            body: nil,
+            baseURL: URL(string: "https://api.example.com")!,
+            operationID: "sign",
+            next: { req, _, _ in
+                let signatureHeader = HTTPField.Name("X-Signature")!
+                XCTAssertEqual(req.headerFields[signatureHeader], "signed-value")
+                return (HTTPResponse(status: .ok), nil)
+            }
+        )
+
+        XCTAssertEqual(response.status, .ok)
+    }
 }
