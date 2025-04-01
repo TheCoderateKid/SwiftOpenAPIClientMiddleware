@@ -25,7 +25,7 @@
 Add the package to your `Package.swift`:
 
 ```swift
-.package(url: "https://github.com/your-org/SwiftOpenAPIClientMiddleware.git", from: "0.1.0")
+.package(url: "https://github.com/thecoderatekid/SwiftOpenAPIClientMiddleware.git", from: "0.1.0")
 ```
 
 Then add it as a dependency to your target:
