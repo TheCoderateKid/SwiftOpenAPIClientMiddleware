@@ -1,0 +1,27 @@
+
+# SwiftLint Configuration for SwiftOpenAPIClientMiddleware
+
+disabled_rules:
+  - line_length
+  - trailing_whitespace
+  - force_cast
+  - force_try
+
+opt_in_rules:
+  - attributes
+  - explicit_init
+  - closure_spacing
+  - file_length
+  - type_contents_order
+
+included:
+  - Sources
+  - Tests
+
+excluded:
+  - .build
+  - .git
+  - .github
+  - DerivedData
+
+reporter: xcode

@@ -1,0 +1,33 @@
+name: Run Swift Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - dev
+      - 'feature/**'
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: Run SwiftLint
+        run: swiftlint --strict
+
+      - name: Resolve Dependencies
+        run: swift package resolve
+
+      - name: Run Swift Tests
+        run: swift test

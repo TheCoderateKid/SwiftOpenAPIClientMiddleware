@@ -70,4 +70,8 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# SPM lockfile (ignored for libraries)
+Package.resolved
+
 >>>>>>> be5e3e0ce6b4f092570cd50be51ae68060d7e660
