@@ -17,7 +17,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-openapi-urlsession.git", from: "1.0.2"),
         .package(url: "https://github.com/apple/swift-http-types.git", from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-openapi-runtime.git", from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-openapi-runtime.git", from: "1.0.0")
     ],
     targets: [
         .target(
@@ -32,7 +32,7 @@ let package = Package(
         .testTarget(
             name: "SwiftOpenAPIClientMiddlewareTests",
             dependencies: [
-                "SwiftOpenAPIClientMiddleware",
+                "SwiftOpenAPIClientMiddleware"
             ]
         )
     ]

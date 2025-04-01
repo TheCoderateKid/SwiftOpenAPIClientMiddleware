@@ -8,7 +8,6 @@
 import Foundation
 import OpenAPIURLSession
 import HTTPTypes
-import HTTPTypesFoundation
 import OpenAPIRuntime
 
 // MARK: - Message Signing Middleware

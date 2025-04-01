@@ -9,7 +9,6 @@
 import Foundation
 import OpenAPIURLSession
 import HTTPTypes
-import HTTPTypesFoundation
 import OpenAPIRuntime
 
 // MARK: - Client Certificate Auth Middleware

@@ -1,7 +1,6 @@
 import Testing
 import Foundation
 import HTTPTypes
-import HTTPTypesFoundation
 import OpenAPIURLSession
 import SwiftOpenAPIClientMiddleware
 @testable import SwiftOpenAPIClientMiddleware
