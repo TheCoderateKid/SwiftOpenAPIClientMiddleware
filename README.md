@@ -16,7 +16,7 @@
 
 ## 🧪 Requirements
 
-- Swift 5.9+
+- Swift 5.9+ (Swift 6 recommended)
 - iOS 15+ / macOS 12+
 - [swift-openapi-urlsession](https://github.com/apple/swift-openapi-urlsession)
 
@@ -39,22 +39,38 @@ Then add it as a dependency to your target:
 )
 ```
 
-## 🚀 Usage Example
+## 🚀 Usage Examples
 
+### ✅ Header and Path Decoding
 ```swift
-import SwiftOpenAPIClientMiddleware
-import OpenAPIURLSession
+let middleware = HeaderAndPathDecodingMiddleware()
+```
 
+### ✅ JWT Authentication
+```swift
+let jwtMiddleware = JWTMiddleware(tokenProvider: {
+    // Fetch or generate your JWT token
+    return "your.jwt.token"
+})
+```
+
+### ✅ Message Signing
+```swift
+let signingMiddleware = MessageSigningMiddleware(signer: { request, body in
+    // Your custom signing logic here
+    return "signed-value"
+})
+```
+
+### ✅ Combined Usage with Client
+```swift
 let client = Client(
   serverURL: URL(string: "https://api.example.com")!,
   transport: OpenAPITransport(
     middlewares: [
       HeaderAndPathDecodingMiddleware(),
       JWTMiddleware(tokenProvider: { "mock.jwt.token" }),
-      MessageSigningMiddleware(signer: { req, body in
-        // Example signer implementation
-        return "signed-value"
-      })
+      MessageSigningMiddleware(signer: { req, body in "signed-value" })
     ]
   )
 )
