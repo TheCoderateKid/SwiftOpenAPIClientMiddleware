@@ -12,7 +12,7 @@ let package = Package(
         .library(
             name: "SwiftOpenAPIClientMiddleware",
             targets: ["SwiftOpenAPIClientMiddleware"]
-        ),
+        )
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-openapi-urlsession.git", from: "1.0.2"),

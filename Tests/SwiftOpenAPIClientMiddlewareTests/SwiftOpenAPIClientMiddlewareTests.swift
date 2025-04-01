@@ -19,7 +19,6 @@ func headerAndPathDecoding() async throws {
         headerFields: HTTPFields([encodedHeader])
     )
 
-
     let (response, _) = try await middleware.intercept(
         request,
         body: nil,
