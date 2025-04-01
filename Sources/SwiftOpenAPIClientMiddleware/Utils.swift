@@ -5,7 +5,6 @@
 //  Created by CL on 4/1/25.
 //
 
-
 import HTTPTypes
 
 extension HTTPFields {
@@ -22,4 +21,3 @@ extension HTTPFields {
         }
     }
 }
-

@@ -2,9 +2,7 @@ import Testing
 import Foundation
 import HTTPTypes
 import OpenAPIURLSession
-import SwiftOpenAPIClientMiddleware
 @testable import SwiftOpenAPIClientMiddleware
-
 
 @Test
 func headerAndPathDecoding() async throws {
